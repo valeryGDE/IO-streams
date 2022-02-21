@@ -1,0 +1,12 @@
+new 2
+private 1
+void 1
+package 1
+public 6
+import 3
+for 1
+this 1
+do 2
+if 1
+class 1
+return 2
