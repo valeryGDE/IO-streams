@@ -1,5 +1,8 @@
 package com.learn.java.basic;
 
+import com.learn.java.basic.exception.KeyWordsException;
+
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -14,24 +17,33 @@ public class KeyWordsWriter {
         this.data = data;
     }
 
-    public boolean save() {
-//        FileWriter writer = null;
+    public boolean save() throws KeyWordsException {
+        FileWriter writer = null;
 
         try {
-            FileWriter writer = new FileWriter(path);
+            writer = new FileWriter(path);
+            FileWriter finalWriter = writer;
             data.getMap().forEach((key, value) -> {
                 try {
-                    writer.write(key + DATA_SEPARATOR + value + System.lineSeparator());
-                    writer.flush();
+                    finalWriter.write(key + DATA_SEPARATOR + value + System.lineSeparator());
+                    finalWriter.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    System.out.println("Error");
+                    System.out.println("Error in lambda expression");
                 }
             });
-        } catch (
-                IOException e) {
-            e.printStackTrace();
-            System.out.println("Please check files");
+        } catch (FileNotFoundException e) {
+            throw new KeyWordsException(e);
+        } catch (IOException e) {
+            throw new KeyWordsException(e);
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    throw new KeyWordsException(e);
+                }
+            }
         }
         return true;
     }
